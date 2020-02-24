@@ -19,53 +19,31 @@ opt.class = 'double';
 opt.tr = 0.0049;
 opt.FA = 1.5*10.^((0:6)./6);
 opt.plot = 1;
-opt.no_reg = 0;
+opt.pattern_type = 2;
 
 %% SENSE-CG reconstruction
 %  Full sampling
 [T1, Mo]                = iDESPOT1(real(imgF), opt);
-save('./SENSE+DESPOT/Conventional_Full.mat', 'T1', 'Mo');
+save('./SENSE+DESPOT/results/Conventional_Full.mat', 'T1', 'Mo');
 
-%  Sampling with radial spokes reaching rectangular
-load('Uyz1.mat');
-for ct = 1:16
-    imgFA               = zeros(nx, ny, nt);
-    for int = 1:nt
-        U               = repmat(Uyz1(:, :, :, int, ct), [1 1 nr]);
-        U               = logical(nshift(U, [1 2]));
-        kU              = U.*squeeze(k(:, :, :, int, :));
-        S               = squeeze(sMaps(:, :, :, int, :));
-        img0(:, :, int) = sum(conj(S).*ifft2c(kU), 3);
-        imgR            = SENSE_CG_recon(S, U, kU);
-        imgFA(:, :, int)= imgR;
-    end
-
-    % iDESPOT1
-    [T1, Mo]            = iDESPOT1(real(permute(imgFA, [1 2 4 3])), opt);
-    matname             = ['./SENSE+DESPOT/Conventional_rect_R' num2str(R(ct))];
-    save(matname, 'Mo', 'T1');
-    
-    if opt.plot
-        figure(1);
-        montage(abs(permute(img0, [1 2 4 3])), 'DisplayRange', [0 max(abs(img0(:)))]);
-        title('Zero-filled VFA images');
-        figure(2);
-        montage(abs(permute(imgFA, [1 2 4 3])), 'DisplayRange', [0 max(abs(imgFA(:)))]);
-        title('Reconstructed VFA images');
-        figure(3);
-        imagesc(rot90(cat(2, Mo, T1)), [0 6]);
-        title('Final estimation');
-        colorbar;
-        axis image off;
-    end
+switch opt.pattern_type
+    case 1 % Rectangular
+        load('Uyz1.mat');
+        Uyz = Uyz1;
+        clear Uyz1;
+        prefix = './SENSE+DESPOT/results/Conventional_rect_R';
+    case 2 % Ellipsoid
+        load('Uyz2.mat');
+        Uyz = Uyz2;
+        clear Uyz2;
+        prefix = './results/ordinary/results/Conventional_ellip_R';
 end
 
-%  Sampling with radial spokes reaching ellipse
-load('Uyz2.mat');
-for ct = 1:16
+range = 1:17;
+for ct = range
     imgFA               = zeros(nx, ny, nt);
     for int = 1:nt
-        U               = repmat(Uyz2(:, :, :, int, ct), [1 1 nr]);
+        U               = repmat(Uyz(:, :, :, int, ct), [1 1 nr]);
         U               = logical(nshift(U, [1 2]));
         kU              = U.*squeeze(k(:, :, :, int, :));
         S               = squeeze(sMaps(:, :, :, int, :));
@@ -76,17 +54,17 @@ for ct = 1:16
 
     % iDESPOT1
     [T1, Mo]            = iDESPOT1(real(permute(imgFA, [1 2 4 3])), opt);
-    matname             = ['./SENSE+DESPOT/Conventional_ellip_R' num2str(R(ct))];
+    matname             = [prefix num2str(R(ct))];
     save(matname, 'Mo', 'T1');
     
     if opt.plot
-        figure(1);
+        figure(11);
         montage(abs(permute(img0, [1 2 4 3])), 'DisplayRange', [0 max(abs(img0(:)))]);
         title('Zero-filled VFA images');
-        figure(2);
+        figure(12);
         montage(abs(permute(imgFA, [1 2 4 3])), 'DisplayRange', [0 max(abs(imgFA(:)))]);
         title('Reconstructed VFA images');
-        figure(3);
+        figure(13);
         imagesc(rot90(cat(2, Mo, T1)), [0 6]);
         title('Final estimation');
         colorbar;
