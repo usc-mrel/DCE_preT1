@@ -11,6 +11,7 @@ clc;
 close all;
 
 %%
+addpath(genpath('./STARDCE'));
 addpath(genpath('./SENSE+DESPOT'));
 addpath(genpath('./Direct_T1'));
 addpath(genpath('./minFunc_2012'));
@@ -19,8 +20,6 @@ addpath(genpath('./minFunc_2012'));
 Direct_demo;
 
 %% Conventional appraoch
-addpath(genpath('./STARDCE'));
-
 SENSE_CG_demo;
 
 %% Evaluation
