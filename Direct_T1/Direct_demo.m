@@ -75,7 +75,7 @@ switch opt.pattern_type
 end
 
 %% Reconstruction
-range = 17;
+range = 1:17;
 for ct = range % For 17 subsampling level in factor decreasing order
     U1                  = logical(repmat(Uyz(:, :, :, :, ct), [1 1 1 1 nr]));
 %     U1                  = double(logical(nshift(U1, [1 2])));
