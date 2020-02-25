@@ -38,7 +38,7 @@ end
 
 %% For parameter sweep, 01/08/2019
 S                       = SPGR(Mo, R1, opt.B1, opt.FA, opt.tr);
-S                       = U1.*fft2c(repmat(sMaps, [1 1 1 1 1]).*repmat(S, [1 1 1 1 size(kU, 5)]));
+S                       = opt.U.*(1/sqrt(prod(opt.size(opt.FTdim)))).*fFastFT(opt.S.*repmat(S, [1 1 1 1 opt.size(5)]), opt.FTdim, opt.FTshift);
 cost1                   = 0.5*sum(abs(S(:)-kU(:)).^2);
 
 if opt.lambda1(1) ~= 0 || opt.lambda1(2) ~= 0

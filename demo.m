@@ -20,7 +20,6 @@ Direct_demo;
 
 %% Conventional appraoch
 addpath(genpath('./STARDCE'));
-addpath(genpath('./Clinical_Recon_Pack-master'));
 
 SENSE_CG_demo;
 
