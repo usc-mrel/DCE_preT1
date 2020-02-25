@@ -14,18 +14,21 @@ S                       = SPGR(Mo, R1, B1, FA, tr);
 S                       = opt.U.*(1/sqrt(prod(opt.size(opt.FTdim)))).*fFastFT(opt.S.*repmat(S, [1 1 1 1 nr]), opt.FTdim, opt.FTshift);
 cost1                   = 0.5*sum(abs(S(:)-kU(:)).^2);
 
-if opt.lambda1 ~= 0 % calculate lambda1*||TVx||1
-    TV = compTx(Mo,opt);
-    cost2 = opt.lambda1*sum(abs(TV(:)));
+if opt.lambda1(1) ~= 0 || opt.lambda1(2) ~= 0 % calculate lambda1*||TVx||1
+    TV = T(P);
+    TV_Mo = TV(:, :, :, 1);
+    TV_R1 = TV(:, :, :, 2);
+    cost2 = opt.lambda1(1)*sum(abs(TV_Mo(:))) + opt.lambda1(2)*sum(abs(TV_R1(:)));
 else
     cost2 = 0;
 end
 
-if opt.lambda2 ~= 0  % calculate lambda2*||Wx||1
-    [wc,fsize]=compWx(Mo,opt);
-    cost3=opt.lambda2*sum(abs(wc(:)));
+if opt.lambda2(1) ~= 0  || opt.lambda2(2) ~= 0% calculate lambda2*||Wx||1
+    [wc_Mo, fsize_Mo] = compWx(Mo, opt);
+    [wc_R1, fsize_R1] = compWx(R1, opt);
+    cost3 = opt.lambda2(1)*sum(abs(wc_Mo(:))) + opt.lambda2(2)*sum(abs(wc_R1(:)));
 else
-    cost3=0;
+    cost3 = 0;
 end
 
 cost                    = cost1+cost2+cost3;
@@ -42,21 +45,25 @@ for it = 1:nt
     g1(:, :, 2) = g1(:, :, 2) + E1.*(-tr).* Mo.*sin(B1.*FA(it)).*(cos(B1.*FA(it))-1)./((1-E1.*cos(B1.*FA(it))).^2) .* dyds(:, :, :, it);
 end
 
-if opt.lambda1 ~= 0
-    u = 1e-8;
-    W = sqrt(conj(TV).*TV+u);
-    W = 1./W;
-    g2 = opt.lambda1.*compThx(W.*TV,opt);
+if opt.lambda1(1) ~= 0 || opt.lambda1(2) ~= 0
+    u = 1e-6;
+    W_Mo = sqrt(conj(TV_Mo).*TV_Mo + u);
+    W_R1 = sqrt(conj(TV_R1).*TV_R1 + u);
+    W_Mo = 1./W_Mo;
+    W_R1 = 1./W_R1;
+    g2 = -cat(3, opt.lambda1(1)*Th(W_Mo.*TV_Mo), opt.lambda1(2)*Th(W_R1.*TV_R1));
 else
     g2=0;
 end
 
-if opt.lambda2 ~= 0
-    %[wc,fsize]=compWx(Mo,opt);
-    u = 1e-8;
-    W1 = sqrt(conj(wc).*wc+u);
-    W1 = 1./W1;
-    g3 = opt.lambda2.*compWhx(W1.*wc,opt,fsize);
+if opt.lambda2(1) ~= 0 || opt.lambda2(2) ~= 0
+    u = 1e-6;
+    W1_Mo = sqrt(conj(wc_Mo).*wc_Mo + u);
+    W1_R1 = sqrt(conj(wc_R1).*wc_R1 + u);
+    W1_Mo = 1./W1_Mo;
+    W1_R1 = 1./W1_R1;
+    g3 = cat(3, opt.lambda2(1)*compWhx(W1_Mo.*wc_Mo,opt,fsize_Mo), ...
+        opt.lambda2(2)*compWhx(W1_R1.*wc_R1, opt, fsize_R1));
 else
     g3 = 0;
 end
