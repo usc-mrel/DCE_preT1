@@ -262,7 +262,7 @@ p = length(x0);
 d = zeros(p,1);
 x = x0;
 t = 1;
-opt = varargin{4};
+opt = varargin{2};
 
 % If necessary, form numerical differentiation functions
 funEvalMultiplier = 1;
