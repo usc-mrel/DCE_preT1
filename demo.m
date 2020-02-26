@@ -11,7 +11,6 @@ clc;
 close all;
 
 %%
-addpath(genpath('./STARDCE'));
 addpath(genpath('./SENSE+DESPOT'));
 addpath(genpath('./Direct_T1'));
 addpath(genpath('./minFunc_2012'));
