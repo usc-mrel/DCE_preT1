@@ -9,28 +9,28 @@ T1_ref                  = T1;
 Mo_ref                  = Mo;
 R                       = [32 28 24 20 18 16 14 12 10 9 8 7 6 5 4 3 1]; % Acceleration factor
 
-matnames                = {'Conventional_Full.mat', 'Conventional_rect_R3.mat', ...
-    'Conventional_rect_R4.mat', 'Conventional_rect_R5.mat', 'Conventional_rect_R6.mat', ...
-    'Conventional_rect_R7.mat', 'Conventional_rect_R8.mat', 'Conventional_rect_R9.mat', ...
-    'Conventional_rect_R10.mat', 'Conventional_rect_R12.mat', 'Conventional_rect_R14.mat', ...
-    'Conventional_rect_R16.mat', 'Conventional_rect_R18.mat', 'Conventional_rect_R20.mat', ...
-    'Conventional_rect_R24.mat', 'Conventional_rect_R28.mat', 'Conventional_rect_R32.mat', ...
-    'Direct_ellip_R1.mat', 'Direct_rect_R3.mat', ...
-    'Direct_rect_R4.mat', 'Direct_rect_R5.mat', 'Direct_rect_R6.mat', ...
-    'Direct_rect_R7.mat', 'Direct_rect_R8.mat', 'Direct_rect_R9.mat'...
-    'Direct_rect_R10.mat', 'Direct_rect_R12.mat', 'Direct_rect_R14.mat', ...
-    'Direct_rect_R16.mat', 'Direct_rect_R18.mat', 'Direct_rect_R20.mat', ...
-    'Direct_rect_R24.mat', 'Direct_rect_R28.mat', 'Direct_rect_R32.mat'};
+matnames                = {'Conventional_ellip_R1.mat', 'Conventional_ellip_R3.mat', ...
+    'Conventional_ellip_R4.mat', 'Conventional_ellip_R5.mat', 'Conventional_ellip_R6.mat', ...
+    'Conventional_ellip_R7.mat', 'Conventional_ellip_R8.mat', 'Conventional_ellip_R9.mat', ...
+    'Conventional_ellip_R10.mat', 'Conventional_ellip_R12.mat', 'Conventional_ellip_R14.mat', ...
+    'Conventional_ellip_R16.mat', 'Conventional_ellip_R18.mat', 'Conventional_ellip_R20.mat', ...
+    'Conventional_ellip_R24.mat', 'Conventional_ellip_R28.mat', 'Conventional_rect_R32.mat', ...
+    'Direct_ellip_R1.mat', 'Direct_ellip_R3.mat', ...
+    'Direct_ellip_R4.mat', 'Direct_ellip_R5.mat', 'Direct_ellip_R6.mat', ...
+    'Direct_ellip_R7.mat', 'Direct_ellip_R8.mat', 'Direct_ellip_R9.mat'...
+    'Direct_ellip_R10.mat', 'Direct_ellip_R12.mat', 'Direct_ellip_R14.mat', ...
+    'Direct_ellip_R16.mat', 'Direct_ellip_R18.mat', 'Direct_ellip_R20.mat', ...
+    'Direct_ellip_R24.mat', 'Direct_ellip_R28.mat', 'Direct_ellip_R32.mat'};
 
 %%
 n                       = size(matnames, 2);
 WM_ref                  = WM_ROI.*T1_ref;
 GM_ref                  = GM_ROI.*T1_ref;
-res                     = zeros(n, 8);
+res                     = zeros(n, 6);
 res_esp                 = zeros(100, 2, n);
 [nx, ny]                = size(T1_ref);
 toShow                  = zeros(ny*2, nx*n/2, 2, 2);
-fprintf('%10s %10s %10s %10s %10s %10s %10s %10s\n','WM mean','WM std','WM rmse','WM ssim','GM mean','GM std','GM rmse','GM ssim');
+fprintf('%10s %10s %10s %10s %10s %10s %10s %10s\n','WM mean','WM std','WM rmse','GM mean','GM std','GM rmse');
 
 for ct = 1:n
     load(matnames{ct});
@@ -45,22 +45,20 @@ for ct = 1:n
     toShow((1:ny) + (floor((ct - 0.5)/n*2))*ny, (1:nx) + (ct -1  - floor((ct -0.5)/n*2)*n/2)*nx, 2, 2) = rot90(WM_ROI.*abs(Mo-Mo_ref)./(abs(Mo_ref)));
 
 
-    % MSE and SSIM
+    % RMSE
     [WM_mu, WM_sigma]   = mean_std(WM);
     [GM_mu, GM_sigma]   = mean_std(GM);
     WM_rmse             = rmse(WM_ref(WM_ref~=0), WM(WM~=0));
     GM_rmse             = rmse(GM_ref(GM_ref~=0), GM(GM~=0));
-    WM_ssim             = ssim(WM, WM_ref);
-    GM_ssim             = ssim(GM, GM_ref);
     
     % ESP
     [esp_plot, grid] = esp(supp.*T1_ref, supp.*T1, [1 2]);
     
-    res(ct, :)          = [WM_mu WM_sigma WM_rmse WM_ssim GM_mu GM_sigma GM_rmse GM_ssim];
+    res(ct, :)          = [WM_mu WM_sigma WM_rmse GM_mu GM_sigma GM_rmse];
     res_esp(:, 1, ct)   = esp_plot;
     res_esp(:, 2, ct)   = grid;
     
-    fprintf('%10f %10f %10f %10f %10f %10f %10f %10f\n',1000*WM_mu, 1000*WM_sigma, WM_rmse, WM_ssim, 1000*GM_mu, 1000*GM_sigma, GM_rmse, GM_ssim);
+    fprintf('%10f %10f %10f %10f %10f %10f %10f %10f\n',1000*WM_mu, 1000*WM_sigma, WM_rmse, 1000*GM_mu, 1000*GM_sigma, GM_rmse);
 end
 
 %% Error maps
@@ -104,7 +102,7 @@ legend('Full', num2str(R(15)), num2str(R(13)), ...
     num2str(R(1)), 'location', 'northeast');
 
 subplot(1, 2, 2); hold on;
-title('ESP plot for direct', 'FontSize', 16);
+title('ESP plot for Direct', 'FontSize', 16);
 for ct = size(matnames, 2)/2+1:2:size(matnames, 2)
     plot(res_esp(:, 2, ct), res_esp(:, 1, ct), 'linewidth', 2);
 end
