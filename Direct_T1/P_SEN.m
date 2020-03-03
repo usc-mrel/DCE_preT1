@@ -28,12 +28,14 @@ P = reshape(P, [opt.size(1) opt.size(2) 2]);
 Mo = reshape(squeeze(P(:,:,1)),[opt.size(1) opt.size(2)]);
 R1 = reshape(squeeze(P(:,:,2)),[opt.size(1) opt.size(2)]);
     
-if opt.plot
-    figure(3);
-    imagesc(rot90(cat(2, Mo, 1./R1)), [0 6]); daspect([2 1 1]);
-    title('Final estimation');
-    colorbar;
-    axis off;
+if ~isfield(opt, 'plot')
+    if opt.plot
+        figure(3);
+        imagesc(rot90(cat(2, Mo, 1./R1)), [0 6]); daspect([2 1 1]);
+        title('Final estimation');
+        colorbar;
+        axis off;
+    end
 end
 
 %% For parameter sweep, 01/08/2019
