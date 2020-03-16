@@ -30,12 +30,12 @@ if no_ref
     P                   = Mo;
     P(:, :, 2)          = R1;
     tic,
-    [Mo, R1, iter, fres, err, corner] = P_SEN(P, sMaps, 1, k, opt);
+    [Mo, R1, iter, trace, cost] = P_SEN(P, sMaps, 1, k, opt);
     toc,
     T1                  = 1./R1;
     
     matname             = './ref.mat';
-    save(matname, 'Mo', 'T1', 'err', 'fres', 'corner');
+    save(matname, 'Mo', 'T1');
 else
     load(refmat);
 end

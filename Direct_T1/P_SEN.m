@@ -7,7 +7,7 @@ options.useMex          = 0;
 options.inter           = 1;                % Intermediate flag
 options.numDiff         = 0;
 options.PROGTOL         = 1e-20;
-options.maxFunEvals     = 3000;
+options.maxFunEvals     = 1000;
 options.cgUpdate        = 1;
 
 iter                    = 1;
