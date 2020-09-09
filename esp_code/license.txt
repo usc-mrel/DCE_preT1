@@ -1,7 +1,0 @@
-This code is licensed under the CC Attribution-Noncommercial-Share Alike 3.0 License. You are required to cite cite our ISBI paper [1] (or a later journal paper if one comes out in the interim) if you use this code or its derivatives in your own work.
-
-[1] T. H. Kim, J. P. Haldar.
-    The Fourier Radial Error Spectrum Plot: A more nuanced quantitative evaluation of image reconstruction quality.
-    IEEE International Symposium on Biomedical Imaging, Washington, DC, 2018. In Press.
-
-In no event shall the University of Southern California, the Authors, or the Distributors be liable to any party for direct, indirect, special, incidental, or consequential damages, including lost profits, arising out of the use of this software, its documentation, or any derivatives thereof, even if the authors have been advised of the possibility of such damage. The University of Southern California, the Authors, and the Distributors specifically disclaim any warranties, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose, and non-infringement. This software is provided on an "as is" basis, and the authors and distributors have no obligation to provide maintenance, support, updates, enhancements, or modifications. This software is for research purposes only and has not been approved for clinical use.
