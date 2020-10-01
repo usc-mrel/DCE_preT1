@@ -13,6 +13,8 @@
 **P2sig**               Cost function value and gradient computation.  
 **argmin**              Solver function.  
 ### Folders
-**DRO**                 DRO data generation.  
+**DRO**                 DRO and noise data.  
 **Utils**               Utility functions, e.g. Fourier transform.  
 **results**             For results storage.
+## Others
+**images**              Sample images, including: ground trurh M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
