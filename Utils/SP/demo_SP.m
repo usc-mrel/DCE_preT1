@@ -1,5 +1,5 @@
-%% Demo script for Marc's Cartesian spiral
-%% It generates exactly the same pattern as Marc's Sparse DCE
+% Demo script for Cartesian spiral trajectory.
+% It generates exactly the same trajectory as Marc's Sparse DCE.
 zy_views = 240;
 zy_slices = 120;
 SPviews = zy_views * zy_slices * 4;

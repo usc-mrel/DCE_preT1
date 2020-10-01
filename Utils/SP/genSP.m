@@ -1,19 +1,27 @@
 function [petab, U1, U2] = genSP(yres, zres, N, pts, target_rot, density, calibr, seed, ellip_flag, debug)
-% Cartesian spiral pattern generation
-% Output:       petab:      PE table
-%               U1:         Pattern inclusing dummy pulses, eddy current
-%                           correction, calibration region and PE
-%               U2:         Pattern consisting of PE only
-% Input:        ky:         ky FOV
-%               kz:         kz FOV
-%               N:          Number of samples
-%               pts:        Points per spiral arm
-%               target_rot: Number of target rotation for spiral arm
-%               density:    Spiral density factor
-%               calibr:     Central calibration region flag
-%               seed:       Random seed
-%               ellip_flag: Elliptical footprint flag
-%               debug:      Debug mode flag
+%   Cartesian spiral pattern generation. The code is adapted from R. Marc
+%   Lebel's Cartesian spiral trajectory generation.
+%
+%   Authro: Zhibo
+%   Date: 04/2020
+%
+%   Output:         petab       PE table, [N 2]
+%                   U1          Pattern inclusing dummy pulses, eddy current correction, calibration region and PE
+%                   U2          Pattern consisting of PE only
+%   Input:          ky          ky FOV, [scalar]
+%                   kz          kz FOV, [scalar]
+%                   N           Number of samples, [scalar]
+%                   pts         Points per spiral arm, [scalar]
+%                   target_rot  Number of target rotation for spiral arm, [scalar]
+%                   density     Spiral density factor, [scalar between 0 and 1]
+%                   calibr      Central calibration region flag. [0 or 1]
+%                                   0, Without calibraion
+%                                   1, With caliration
+%                   seed        Random seed, [scalr]
+%                   ellip_flag  Elliptical footprint flag, [0 1]
+%                                   0, Without elliptical footprint
+%                                   1, With elliptical footprint
+%                   debug       Debug mode flag, [0 1]
 
 if nargin < 10
     debug = 1;

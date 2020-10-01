@@ -12,7 +12,7 @@ load('coilSenseMaps.mat');
 
 % Set scan parameters and reconstruction related options
 FA                      = 1.5 * 10.^((0:6)./6);
-B1                      = ones(size(Mo));
+B1                      = ones(size(m0));
 TR                      = 0.0049;
 opt.FA                  = FA;
 opt.tr                  = TR;
@@ -21,8 +21,8 @@ opt.FTdim               = [1 2];
 opt.FTshift             = 1;
 
 % Synthesize fully sampled kspace data and VFA images
-k                       = genKspace(Mo, 1./T1, B1, FA, TR, sMaps, [1 2], 1);
-img                     = spgr(Mo, 1./T1, B1, FA, TR);
+k                       = genKspace(m0, 1./T1, B1, FA, TR, sMaps, [1 2], 1);
+img                     = spgr(M0, 1./T1, B1, FA, TR);
 
 [np, nv, ns, nt, nr]    = size(k);
 opt.B1                  = B1;
@@ -57,12 +57,12 @@ sf2         = 1.5922;
 kU          = kU * sf2;                 % Data normalization.
 
 % Direct T1 mapping
-mo          = zeros(np, nv, ns);
+m0          = zeros(np, nv, ns);
 r1          = ones(np, nv, ns);
-P           = cat(4, mo, r1);
+P           = cat(4, m0, r1);
 
-[mo, r1]    = P_SEN(P, kU, opt);
-mo          = mo/sf2;
+[m0, r1]    = P_SEN(P, kU, opt);
+m0          = m0/sf2;
 t1          = 1./r1;
 
 % Save results
@@ -76,13 +76,13 @@ switch pattern
     case 3
         matname = ['.\results\SNR' num2str(SNR) '_RGA_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
 end
-save(matname, 'mo', 'r1', 't1', 'U');
+save(matname, 'm0', 'r1', 't1', 'U');
 
 %% Display results
 load('T1cm.mat');
 mask = (imData ~= 0);
 figure;
-montage(permute(mask.*Mo, [1 2 4 3]), 'DisplayRange', [0 1.5], 'Size', [3 4]);
+montage(permute(mask.*M0, [1 2 4 3]), 'DisplayRange', [0 1.5], 'Size', [3 4]);
 title('Ground truth M_0');
 set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
 
@@ -98,7 +98,7 @@ title('Ground truth T_1');
 set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
 
 figure;
-montage(permute(mask.*mo, [1 2 4 3]), 'DisplayRange', [0 1.5], 'Size', [3 4]);
+montage(permute(mask.*m0, [1 2 4 3]), 'DisplayRange', [0 1.5], 'Size', [3 4]);
 title('Reconstructed M_0');
 set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
 
@@ -115,7 +115,7 @@ title('Reconstructed T_1');
 set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
 
 figure;
-montage(permute(100*mask.*(Mo-mo)./Mo, [1 2 4 3]), 'DisplayRange', [-20 20], 'Size', [3 4]);
+montage(permute(100*mask.*(m0-M0)./m0, [1 2 4 3]), 'DisplayRange', [-20 20], 'Size', [3 4]);
 c5 = colorbar;
 c5.Position = [0.92 0.15 0.03 0.75];
 c5.Label.String = '%';

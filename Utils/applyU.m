@@ -1,4 +1,30 @@
 function [kU, U] = applyU(k, pattern, R, realization)
+%   Generate and apply sparse sampling pattern.
+%
+%   Author: Zhibo Zhu
+%   Date: 04/2020
+%
+%   Usage: [kU, U] = applyU(k, pattern, R, realization)
+%
+%   Input:
+%       - k             k-space data, [np nv ns nt nr]
+%       - pattern       Pattern type indicator, [0 or 1 or 2 or 3]
+%                           0, Cartesian spiral, rectangular footprint
+%                           1, Cartesian spiral, elliptical footprint
+%                           2, Cartesian radial Randomized Golden-Angle, elliptical footprint
+%                           3, Cartesian radial Randomized Golden-Angle, rectangular footprint
+%       - R             Undersampling factor, [scalar]
+%       - realization   Pattern realization indicator, [scalar]
+%   Output:
+%       - kU            Undersampled k-space data, [np nv ns nt nr]
+%       - U             Sampling pattern matrix, [np nv ns nt nr]
+%   Others:
+%       - np            Number of pointx along x
+%       - nv            Number of points along y
+%       - ns            Number of slices
+%       - nt            Number of contrast, e.g. time fram, flip angle
+%       - nr            Number of coils
+
 [np, nv, ns, nt, nr] = size(k);
 if R ~= 1
     if pattern == 0 || pattern == 1 % Cartesian spiral
