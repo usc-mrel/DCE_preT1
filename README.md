@@ -14,5 +14,5 @@
 **argmin**              Solver function.  
 ### Folders
 **DRO**                 DRO data generation.  
-**Utils**               Utility functions, e.g. Fourier transform.
+**Utils**               Utility functions, e.g. Fourier transform.  
 **results**             For results storage.
