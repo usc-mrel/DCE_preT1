@@ -35,8 +35,8 @@ SNR = inf; % SNR level
 for realization = 1 % Noise realization loop
     wm                  = img(:, :, :, 7) .* (imData == tissueTypes.WhiteMatter);
     k_noise             = applyNoise(k, wm(abs(wm) ~= 0), noisecov, SNR);
-    for pattern = [0] % Pattern loop
-        for R = [4] % Undersampling level loop
+    for pattern = [0 1 2 3] % Pattern loop
+        for R = [1 4 7 10 16 22 28 34 40] % Undersampling level loop
             fprintf(['Reconstructing SNR: ' num2str(SNR) ', pattern: ' num2str(pattern) ', R: ' num2str(R) '\n']);
             % Apply k-space under-sampling. "pattern' controls the type of pattern and
             % "R" controls under-sampling level.
