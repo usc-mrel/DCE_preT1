@@ -15,5 +15,5 @@
 ### Folders
 **DRO**                 DRO and noise data.  
 **Utils**               Utility functions, e.g. Fourier transform.  
-**results**             For results storage.
+**results**             For results storage.  
 **images**              Sample images, including: ground trurh M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
