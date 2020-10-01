@@ -52,13 +52,13 @@ for realization = 1 % Noise realization loop
             kU          = kU * sf2; % Data normalization.
             
             % Direct T1 mapping
-            Mo          = zeros(np, nv, ns);
-            R1          = ones(np, nv, ns);
-            P           = cat(4, Mo, R1);
+            mo          = zeros(np, nv, ns);
+            r1          = ones(np, nv, ns);
+            P           = cat(4, mo, r1);
             
-            [Mo, R1]    = P_SEN(P, kU, opt);
-            Mo          = Mo/sf2;
-            T1          = 1./R1;
+            [mo, r1]    = P_SEN(P, kU, opt);
+            mo          = mo/sf2;
+            t1          = 1./r1;
             
             % Save results
             switch pattern
@@ -71,7 +71,65 @@ for realization = 1 % Noise realization loop
                 case 3
                     matname = ['.\results\SNR' num2str(SNR) '_RGA_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
             end
-            save(matname, 'Mo', 'R1', 'T1', 'U');
+            save(matname, 'mo', 'r1', 't1', 'U');
         end
     end
 end
+
+%% Display results
+load('T1cm.mat');
+mask = (imData ~= 0);
+figure;
+montage(permute(mask.*Mo, [1 2 4 3]), 'DisplayRange', [0 1.5], 'Size', [3 4]);
+title('Ground truth M_0');
+set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
+
+figure;
+montage(permute(1e3*mask.*T1, [1 2 4 3]), 'DisplayRange', [0 3e3], 'Size', [3 4]);
+colormap(T1colormap);
+c2 = colorbar;
+c2.Position = [0.92 0.15 0.03 0.75];
+c2.Label.String = 'ms';
+c2.Label.Position = [1.4 3200 0];
+c2.Label.Rotation = 0;
+title('Ground truth T_1');
+set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
+ 
+figure;
+montage(permute(mask.*mo, [1 2 4 3]), 'DisplayRange', [0 1.5], 'Size', [3 4]);
+title('Reconstructed M_0');
+set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
+
+figure;
+montage(permute(1e3*mask.*t1, [1 2 4 3]), 'DisplayRange', [0 3e3], 'Size', [3 4]);
+c4 = colorbar;
+c4.Position = [0.92 0.15 0.03 0.75];
+c4.Label.String = 'ms';
+c4.Label.Position = [1.4 3200 0];
+c4.Label.Rotation = 0;
+colormap(T1colormap);
+colormap(T1colormap);
+title('Reconstructed T_1');
+set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
+
+figure;
+montage(permute(100*mask.*(Mo-mo)./Mo, [1 2 4 3]), 'DisplayRange', [-20 20], 'Size', [3 4]);
+c5 = colorbar;
+c5.Position = [0.92 0.15 0.03 0.75];
+c5.Label.String = '%';
+c5.Label.Position = [1.4 22.66 0];
+c5.Label.Rotation = 0;
+title('M_0 fractional difference');
+set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
+
+figure;
+montage(permute(100*mask.*abs(T1-t1)./T1, [1 2 4 3]), 'DisplayRange', [0 15], 'Size', [3 4]);
+c6 = colorbar;
+c6.Position = [0.92 0.15 0.03 0.75];
+c6.Label.String = '%';
+c6.Label.Position = [1.4 16 0];
+c6.Label.Rotation = 0;
+colormap(T1colormap);
+colormap(T1colormap);
+title('T_1 fractional difference');
+set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
