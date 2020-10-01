@@ -1,4 +1,4 @@
-# Matlab codes for Sparse Pre-Contrast T1 Mapping for High-Resolution Whole-Brain DCE-MRI
+# Matlab Codes for Sparse Pre-Contrast T1 Mapping for High-Resolution Whole-Brain DCE-MRI
 [Magnetic Resonance Engineering Laboratory (MREL)](https://mrel.usc.edu/)  
 **University of Southern California**
 ## Code Structure
@@ -7,13 +7,15 @@
 ### Functions
 **spgr.m**              VFA images signal intensity computation.  
 **genKspace.m**         VFA k-space signal computation.  
-**applyNoise.m**        Generate and apply syntheszied noise.  
+**addNoise.m**          Generate and apply synthesized noise.  
 **applyU.m**            Generate and apply sparse sampling pattern.  
-**P_SEN.m**             Reconstruction entry.  
+**P_SEN.m**             Reconstruction function.  
 **P2sig.m**             Cost function value and gradient computation.  
 **argmin.m**            Solver function.  
 ### Folders
 **DRO**                 DRO and noise data.  
 **Utils**               Utility functions, e.g. Fourier transform.  
-**results**             For results storage.  
-**images**              Sample images, including: ground trurh M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
+**Results**             For results storage.  
+**Images**              Sample images, including: ground trurh M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
+
+Got questions? Contact zhibozhu@usc.edu.
