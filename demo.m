@@ -38,7 +38,7 @@ pattern = 0;                            %Pattern type indicator
 % 1, Cartesian spiral, elliptical footprint.
 % 2, Cartesian-radial Randomized Golden Angle, elliptical footprint.
 % 3, Cartesian-radial Randomized Golden Angle, rectangular footprint.
-R = 4; % Undersampling level
+R = 4;                                  % Undersampling level
 wm                  = img(:, :, :, 7) .* (imData == tissueTypes.WhiteMatter);
 k_noise             = applyNoise(k, wm(abs(wm) ~= 0), noisecov, SNR);
 
