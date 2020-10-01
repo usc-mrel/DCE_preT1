@@ -9,12 +9,11 @@
 **genKspace.m**         VFA k-space signal computation.  
 **applyNoise.m**        Generate and apply syntheszied noise.  
 **applyU.m**            Generate and apply sparse sampling pattern.  
-**P_SEN**               Reconstruction entry.  
-**P2sig**               Cost function value and gradient computation.  
-**argmin**              Solver function.  
+**P_SEN.m**             Reconstruction entry.  
+**P2sig.m**             Cost function value and gradient computation.  
+**argmin.m**            Solver function.  
 ### Folders
 **DRO**                 DRO and noise data.  
 **Utils**               Utility functions, e.g. Fourier transform.  
 **results**             For results storage.
-## Others
 **images**              Sample images, including: ground trurh M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
