@@ -1,4 +1,4 @@
-function k = applyNoise(k, img_precontrast, noisecov, SNR)
+function k = addNoise(k, img_precontrast, noisecov, SNR)
 
 if isinf(SNR) % Noiseless
     return;
