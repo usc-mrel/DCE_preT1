@@ -31,50 +31,52 @@ opt.size                = [np nv ns nt nr];
 opt.MaxIter             = 500;
 
 %%
-SNR = inf; % SNR level
-for realization = 1 % Noise realization loop
-    wm                  = img(:, :, :, 7) .* (imData == tissueTypes.WhiteMatter);
-    k_noise             = applyNoise(k, wm(abs(wm) ~= 0), noisecov, SNR);
-    for pattern = [0 1 2 3] % Pattern loop
-        for R = [1 4 7 10 16 22 28 34 40] % Undersampling level loop
-            fprintf(['Reconstructing SNR: ' num2str(SNR) ', pattern: ' num2str(pattern) ', R: ' num2str(R) '\n']);
-            % Apply k-space under-sampling. "pattern' controls the type of pattern and
-            % "R" controls under-sampling level.
-            [kU, U]     = applyU(k_noise, pattern, R, 1);
-            opt.U       = U;
-            
-%             tmp1        = spgr(ones(1,1,2), ones(1,1,2)/1.5, 1, opt.FA, opt.tr);
-%             tmp2        = sum(conj(sMaps).*iFastFT(kU, opt), 5);
-%             wm          = tmp2.*(imData==3); % WM signal
-%             wm          = wm(abs(wm~=0));
-%             sf2         = median(tmp1(:))/median(abs(wm));
-            sf2         = 1.5922;
-            kU          = kU * sf2; % Data normalization.
-            
-            % Direct T1 mapping
-            mo          = zeros(np, nv, ns);
-            r1          = ones(np, nv, ns);
-            P           = cat(4, mo, r1);
-            
-            [mo, r1]    = P_SEN(P, kU, opt);
-            mo          = mo/sf2;
-            t1          = 1./r1;
-            
-            % Save results
-            switch pattern
-                case 0
-                    matname = ['.\results\SNR' num2str(SNR) '_SP_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
-                case 1
-                    matname = ['.\results\SNR' num2str(SNR) '_SP_ellip_R' num2str(R) '_re' num2str(realization) '.mat'];
-                case 2
-                    matname = ['.\results\SNR' num2str(SNR) '_RGA_ellip_R' num2str(R) '_re' num2str(realization) '.mat'];
-                case 3
-                    matname = ['.\results\SNR' num2str(SNR) '_RGA_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
-            end
-            save(matname, 'mo', 'r1', 't1', 'U');
-        end
-    end
+SNR = inf;                              % SNR level
+realization = 1;                        % Noise realization indicator
+pattern = 0;                            %Pattern type indicator
+% 0, Cartesian spiral, rectangular footprint.
+% 1, Cartesian spiral, elliptical footprint.
+% 2, Cartesian-radial Randomized Golden Angle, elliptical footprint.
+% 3, Cartesian-radial Randomized Golden Angle, rectangular footprint.
+R = 4; % Undersampling level
+wm                  = img(:, :, :, 7) .* (imData == tissueTypes.WhiteMatter);
+k_noise             = applyNoise(k, wm(abs(wm) ~= 0), noisecov, SNR);
+
+fprintf(['Reconstructing SNR: ' num2str(SNR) ', pattern: ' num2str(pattern) ', R: ' num2str(R) '\n']);
+% Apply k-space under-sampling. "pattern' controls the type of pattern and
+% "R" controls under-sampling level.
+[kU, U]     = applyU(k_noise, pattern, R, 1);
+opt.U       = U;
+
+% tmp1        = spgr(ones(1,1,2), ones(1,1,2)/1.5, 1, opt.FA, opt.tr);
+% tmp2        = sum(conj(sMaps).*iFastFT(kU, opt), 5);
+% wm          = tmp2.*(imData==3); % WM signal
+% wm          = wm(abs(wm~=0));
+% sf2         = median(tmp1(:))/median(abs(wm));
+sf2         = 1.5922;
+kU          = kU * sf2;                 % Data normalization.
+
+% Direct T1 mapping
+mo          = zeros(np, nv, ns);
+r1          = ones(np, nv, ns);
+P           = cat(4, mo, r1);
+
+[mo, r1]    = P_SEN(P, kU, opt);
+mo          = mo/sf2;
+t1          = 1./r1;
+
+% Save results
+switch pattern
+    case 0
+        matname = ['.\results\SNR' num2str(SNR) '_SP_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
+    case 1
+        matname = ['.\results\SNR' num2str(SNR) '_SP_ellip_R' num2str(R) '_re' num2str(realization) '.mat'];
+    case 2
+        matname = ['.\results\SNR' num2str(SNR) '_RGA_ellip_R' num2str(R) '_re' num2str(realization) '.mat'];
+    case 3
+        matname = ['.\results\SNR' num2str(SNR) '_RGA_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
 end
+save(matname, 'mo', 'r1', 't1', 'U');
 
 %% Display results
 load('T1cm.mat');
@@ -94,7 +96,7 @@ c2.Label.Position = [1.4 3200 0];
 c2.Label.Rotation = 0;
 title('Ground truth T_1');
 set(gca, 'Position', [0.0959 0.0581 0.8076 0.8433]);
- 
+
 figure;
 montage(permute(mask.*mo, [1 2 4 3]), 'DisplayRange', [0 1.5], 'Size', [3 4]);
 title('Reconstructed M_0');
