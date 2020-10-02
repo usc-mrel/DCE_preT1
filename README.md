@@ -7,7 +7,7 @@
 ### Functions
 **spgr.m**              VFA images signal intensity computation.  
 **genKspace.m**         VFA k-space signal computation.  
-**addNoise.m**          Generate and apply synthesized noise.  
+**addNoise.m**          Generate and add synthesized noise.  
 **applyU.m**            Generate and apply sparse sampling pattern.  
 **P_SEN.m**             Reconstruction function.  
 **P2sig.m**             Compute cost function value and gradient.  
@@ -24,5 +24,6 @@
 4. Müller A, Jurcoane A, Kebir S, et al. Quantitative T1-mapping detects cloudy-enhancing tumor compartments predicting outcome of patients with glioblastoma. Cancer Med. 2017;6(1):89-99. doi:10.1002/cam4.966
 5. Hattingen E, Müller A, Jurcoane A, et al. Value of quantitative magnetic resonance imaging T1-relaxometry in predicting contrast-enhancement in glioblastoma patients. Oncotarget. 2017;8(32):53542-53551. doi:10.18632/oncotarget.18612
 6. Badve C, Yu A, Dastmalchian S, et al. MR fingerprinting of adult brain tumors: Initial experience. In: American Journal of Neuroradiology. Vol 38. American Society of Neuroradiology; 2017:492-499. doi:10.3174/ajnr.A5035
+7. Lebel RM, Guo Y, Lingala SG, Frayne R, Nayak KS. Highly accelerated DCE imaging with integrated T1 mapping. In: ISMRM 25th Scientific Sessions. Honolulu; 2017:138. https://cds.ismrm.org/protected/17MPresentations/abstracts/0138.html. Accessed May 12, 2020.
 
 Got questions? Contact zhibozhu@usc.edu.
