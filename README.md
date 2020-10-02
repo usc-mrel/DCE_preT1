@@ -16,7 +16,7 @@
 **DRO**                 DRO and noise data.  
 **Utils**               Utility functions, e.g. Fourier transform.  
 **Results**             For results storage.  
-**Images**              Sample images, including: ground trurh M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
+**Images**              Sample images, including: ground truth M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
 ### Relevant References
 1. Bosca RJ, Jackson EF. Creating an anthropomorphic digital MR phantom - An extensible tool for comparing and evaluating quantitative imaging algorithms. Phys Med Biol. 2016;61(2):974-982. doi:10.1088/0031-9155/61/2/974
 2. Bliesener Y, Lingala SG, Haldar JP, Nayak KS. Impact of (k,t) sampling on DCE MRI tracer kinetic parameter estimation in digital reference objects. Magn Reson Med. 2020;83(5):1625-1639. doi:10.1002/mrm.28024
