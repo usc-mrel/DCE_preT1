@@ -5,14 +5,20 @@ clear; clc; close all;
 addpath(genpath('./DRO'));
 addpath(genpath('./Utils'));
 
+flag_field = 0;
+
 %% Data preparation and reconstruction settings
-load('noisecov.mat');
 load('discreteBrainModel.mat');
 load('coilSenseMaps.mat');
+if field_flag == 0
+    load('noisecov.mat');
+else
+    load('noisecov_3T.mat');
+end
 
 % Set scan parameters and reconstruction related options
 FA                      = 1.5 * 10.^((0:6)./6);
-B1                      = ones(size(m0));
+B1                      = ones(size(Mo));
 TR                      = 0.0049;
 opt.FA                  = FA;
 opt.tr                  = TR;
@@ -21,8 +27,8 @@ opt.FTdim               = [1 2];
 opt.FTshift             = 1;
 
 % Synthesize fully sampled kspace data and VFA images
-k                       = genKspace(m0, 1./T1, B1, FA, TR, sMaps, [1 2], 1);
-img                     = spgr(M0, 1./T1, B1, FA, TR);
+k                       = genKspace(Mo, 1./T1, B1, FA, TR, sMaps, [1 2], 1);
+img                     = spgr(Mo, 1./T1, B1, FA, TR);
 
 [np, nv, ns, nt, nr]    = size(k);
 opt.B1                  = B1;
@@ -31,7 +37,7 @@ opt.size                = [np nv ns nt nr];
 opt.MaxIter             = 500;
 
 %%
-SNR = inf;                              % SNR level
+SNR = 50;                              % SNR level
 realization = 1;                        % Noise realization indicator
 pattern = 0;                            %Pattern type indicator
 % 0, Cartesian spiral, rectangular footprint.
@@ -40,7 +46,7 @@ pattern = 0;                            %Pattern type indicator
 % 3, Cartesian-radial Randomized Golden Angle, rectangular footprint.
 R = 4;                                  % Undersampling level
 wm                  = img(:, :, :, 7) .* (imData == tissueTypes.WhiteMatter);
-k_noise             = applyNoise(k, wm(abs(wm) ~= 0), noisecov, SNR);
+k_noise             = addNoise(k, wm(abs(wm) ~= 0), noisecov, SNR, flag_field);
 
 fprintf(['Reconstructing SNR: ' num2str(SNR) ', pattern: ' num2str(pattern) ', R: ' num2str(R) '\n']);
 % Apply k-space under-sampling. "pattern' controls the type of pattern and
