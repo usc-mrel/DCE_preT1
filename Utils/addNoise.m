@@ -1,4 +1,4 @@
-function k = addNoise(k, img, noisecov, SNR)
+function k = addNoise(k, img, noisecov, SNR, field_flag)
 %   Add synthesized noise to k-space data.
 %
 %   Author: Zhibo Zhu
@@ -11,6 +11,7 @@ function k = addNoise(k, img, noisecov, SNR)
 %       - img           Refernce signal, [Column vector]
 %       - noisecov      Noise covariance matrix, [nr nr]
 %       - SNR           Desired SNR level, [scalar]
+%       - field_flag    Binary flag for field strength, [scalar]
 %   Output:
 %       - k             Noisy k-space data, [np nv ns nt nr]
 %   Others:
@@ -25,10 +26,14 @@ if isinf(SNR) % Noiseless
 end
 
 [np, nv, ns, nt, nr] = size(k);
-currentSig = max(img(:));
-currentSNR = currentSig / mean(sqrt(diag(noisecov)));
-SNR = currentSNR;
-scaleNoise = (currentSNR/SNR)^2 / 2 * (np*nv); % 2D kspace noise
+if field_flag == 0 % noisecov is not 3T
+    currentSig = max(img(:));
+    currentSNR = currentSig / mean(sqrt(diag(noisecov)));
+    SNR = currentSNR;
+    scaleNoise = (currentSNR/SNR)^2 / 2 * (np*nv); % 2D kspace noise
+else % noisecov is 3T
+    scaleNoise = 1;
+end
 noisecov = noisecov * scaleNoise;
 
 noise = mvnrnd(zeros(1, nr), noisecov, np*nv*ns*nt ) + 1i * mvnrnd(zeros(1, nr), noisecov, np*nv*ns*nt);
