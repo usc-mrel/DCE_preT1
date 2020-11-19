@@ -77,7 +77,6 @@ t1          = 1./r1;
 switch pattern
     case 0
         matname = ['.\results\SNR' num2str(SNR) '_SP_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
-        matname = ['.\results\SNR' num2str(SNR) '_SP_rect_R' num2str(R) '_re2.mat'];
     case 1
         matname = ['.\results\SNR' num2str(SNR) '_SP_ellip_R' num2str(R) '_re' num2str(realization) '.mat'];
     case 2
