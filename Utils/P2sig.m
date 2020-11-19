@@ -51,11 +51,15 @@ E1                      = exp(-tr.*R1);
 g1                      = zeros(np, nv, ns, 2);
 dyds                    = sum(conj(opt.S) .* prod(opt.size(opt.FTdim)) .* iFastFT((S-kU), opt), 5);
 for it = 1:nt
-    g1(:, :, :, 1)      = g1(:, :, :, 1) + conj((1-E1).*sin(B1.*FA(it))./(1-E1.*cos(B1.*FA(it)))) .* dyds(:, :, :, it);
-    g1(:, :, :, 2)      = g1(:, :, :, 2) + conj(E1.*(-tr).* M0.*sin(B1.*FA(it)).*(cos(B1.*FA(it))-1)./((1-E1.*cos(B1.*FA(it))).^2)) .* dyds(:, :, :, it);
+%     g1(:, :, :, 1)      = g1(:, :, :, 1) + conj((1-E1).*sin(B1.*FA(it))./(1-E1.*cos(B1.*FA(it)))) .* dyds(:, :, :, it);
+%     g1(:, :, :, 2)      = g1(:, :, :, 2) + conj(E1.*(-tr).* M0.*sin(B1.*FA(it)).*(cos(B1.*FA(it))-1)./((1-E1.*cos(B1.*FA(it))).^2)) .* dyds(:, :, :, it);
+    g1(:, :, :, 1)      = g1(:, :, :, 1) + ((1-E1).*sin(B1.*FA(it))./(1-E1.*cos(B1.*FA(it)))) .* dyds(:, :, :, it);
+    g1(:, :, :, 2)      = g1(:, :, :, 2) + (E1.*(-tr).*conj(M0).*sin(B1.*FA(it)).*(cos(B1.*FA(it))-1)./((1-E1.*cos(B1.*FA(it))).^2)) .* dyds(:, :, :, it);
+    % conj(M0) is used since M0 is allowed to be complex during iterations.
+    % abs(M0) will be taken at the end of the reconstruction.
 end
 
 grad                    = g1;
-grad(:, :, :, 2)        = real(grad(:, :, :, 2));
+grad(:, :, :, 2)        = real(grad(:, :, :, 2)); % Project R1 onto real axis.
 grad                    = grad(:);
 end
