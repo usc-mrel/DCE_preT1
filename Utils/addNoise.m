@@ -29,7 +29,6 @@ end
 if field_flag == 0 % noisecov is not 3T
     currentSig = max(img(:));
     currentSNR = currentSig / mean(sqrt(diag(noisecov)));
-    SNR = currentSNR;
     scaleNoise = (currentSNR/SNR)^2 / 2 * (np*nv); % 2D kspace noise
 else % noisecov is 3T
     scaleNoise = 1;
