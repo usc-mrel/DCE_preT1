@@ -5,7 +5,7 @@ clear; clc; close all;
 addpath(genpath('./DRO'));
 addpath(genpath('./Utils'));
 
-flag_field = 0;
+field_flag = 0;
 
 %% Data preparation and reconstruction settings
 load('discreteBrainModel.mat');
@@ -37,7 +37,7 @@ opt.size                = [np nv ns nt nr];
 opt.MaxIter             = 500;
 
 %%
-SNR = 50;                              % SNR level
+SNR = inf;                              % SNR level
 realization = 1;                        % Noise realization indicator
 pattern = 0;                            %Pattern type indicator
 % 0, Cartesian spiral, rectangular footprint.
@@ -46,7 +46,7 @@ pattern = 0;                            %Pattern type indicator
 % 3, Cartesian-radial Randomized Golden Angle, rectangular footprint.
 R = 4;                                  % Undersampling level
 wm                  = img(:, :, :, 7) .* (imData == tissueTypes.WhiteMatter);
-k_noise             = addNoise(k, wm(abs(wm) ~= 0), noisecov, SNR, flag_field);
+k_noise             = addNoise(k, wm(abs(wm) ~= 0), noisecov, SNR, field_flag);
 
 fprintf(['Reconstructing SNR: ' num2str(SNR) ', pattern: ' num2str(pattern) ', R: ' num2str(R) '\n']);
 % Apply k-space under-sampling. "pattern' controls the type of pattern and
@@ -54,12 +54,14 @@ fprintf(['Reconstructing SNR: ' num2str(SNR) ', pattern: ' num2str(pattern) ', R
 [kU, U]     = applyU(k_noise, pattern, R, 1);
 opt.U       = U;
 
+% For in-vivo experiments, the scaling factor should be computed based on
+% the comments below. The idea is such that M0 and R1 should be ~1.
 % tmp1        = spgr(ones(1,1,2), ones(1,1,2)/1.5, 1, opt.FA, opt.tr);
 % tmp2        = sum(conj(sMaps).*iFastFT(kU, opt), 5);
 % wm          = tmp2.*(imData==3); % WM signal
 % wm          = wm(abs(wm~=0));
 % sf2         = median(tmp1(:))/median(abs(wm));
-sf2         = 1.5922;
+sf2         = 1.5922;                   % sf2 is a shortcut and is purely specific for the demo.
 kU          = kU * sf2;                 % Data normalization.
 
 % Direct T1 mapping
@@ -75,6 +77,7 @@ t1          = 1./r1;
 switch pattern
     case 0
         matname = ['.\results\SNR' num2str(SNR) '_SP_rect_R' num2str(R) '_re' num2str(realization) '.mat'];
+        matname = ['.\results\SNR' num2str(SNR) '_SP_rect_R' num2str(R) '_re2.mat'];
     case 1
         matname = ['.\results\SNR' num2str(SNR) '_SP_ellip_R' num2str(R) '_re' num2str(realization) '.mat'];
     case 2
