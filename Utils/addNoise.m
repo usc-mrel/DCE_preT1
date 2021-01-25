@@ -1,4 +1,4 @@
-function k = addNoise(k, img, noisecov, SNR, field_flag)
+function k = addNoise(k, img, noisecov, SNR, field_flag, realization)
 %   Add synthesized noise to k-space data.
 %
 %   Author: Zhibo Zhu
@@ -35,6 +35,7 @@ else % noisecov is 3T
 end
 noisecov = noisecov * scaleNoise;
 
+rng(realization);
 noise = mvnrnd(zeros(1, nr), noisecov, np*nv*ns*nt ) + 1i * mvnrnd(zeros(1, nr), noisecov, np*nv*ns*nt);
 noise = reshape(noise, [np nv ns nt nr]);
 
