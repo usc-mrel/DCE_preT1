@@ -14,6 +14,7 @@
 **argmin.m**            Solver function.  
 ### Folders
 **DRO**                 DRO and noise data.  
+**Volunteer**           Volunteer data.
 **Utils**               Utility functions, e.g. Fourier transform.  
 **Results**             For results storage.  
 **Images**              Sample images, including: ground truth M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
