@@ -4,7 +4,15 @@
 ## Code Structure
 ### Demo script
 **demo.m**              Main script demonstrating sparse T1 mapping using a 256x256x12 anatomically realistic brain tumor Digital Reference Object (**DRO**).
-### Functions
+
+### Folders
+**DRO**                 DRO and noise data.  
+**Images**              DRO sample images, including: ground truth M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
+**Results**             DRO results storage.  
+**BT**                  ROI-level brain tumor patient data (tumor only).   
+**Utils**               Utility functions, e.g. Fourier transform.  
+
+### Functions (under Utils)
 **spgr.m**              VFA images signal intensity computation.  
 **genKspace.m**         VFA k-space signal computation.  
 **addNoise.m**          Generate and add synthesized noise.  
@@ -12,12 +20,7 @@
 **P_SEN.m**             Reconstruction function.  
 **P2sig.m**             Compute cost function value and gradient.  
 **argmin.m**            Solver function.  
-### Folders
-**DRO**                 DRO and noise data.  
-**in vivo**             ROI-level patient data of tumor only.   
-**Utils**               Utility functions, e.g. Fourier transform.  
-**Results**             For results storage.  
-**Images**              Sample images, including: ground truth M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
+
 ### Relevant References
 1. Bosca RJ, Jackson EF. Creating an anthropomorphic digital MR phantom - An extensible tool for comparing and evaluating quantitative imaging algorithms. Phys Med Biol. 2016;61(2):974-982. doi:10.1088/0031-9155/61/2/974
 2. Bliesener Y, Lingala SG, Haldar JP, Nayak KS. Impact of (k,t) sampling on DCE MRI tracer kinetic parameter estimation in digital reference objects. Magn Reson Med. 2020;83(5):1625-1639. doi:10.1002/mrm.28024
