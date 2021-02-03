@@ -6,7 +6,7 @@
 **demo.m**              Main script demonstrating sparse T1 mapping using a 256x256x12 anatomically realistic brain tumor Digital Reference Object (**DRO**).
 
 ### Folders
-**DRO**                 DRO and noise data.  
+**DRO**                 DRO generation, including 3T-mimicking noise.  
 **Images**              DRO sample images, including: ground truth M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.
 **Results**             DRO results storage.  
 **BT**                  ROI-level brain tumor patient data (tumor only).   
