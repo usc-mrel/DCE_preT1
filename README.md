@@ -7,9 +7,9 @@
 
 ### Folders
 **DRO**                 DRO generation, including 3T-mimicking noise.  
-**Images**              DRO sample images, including: ground truth M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.  
-**Results**             DRO results storage.  
-**BT**                  ROI-level brain tumor patient data (tumor only).   
+**images**              DRO sample images, including: ground truth M0 and T1 maps, reconstructed M0 and T1 maps, fractional difference maps.  
+**results**             DRO results storage.  
+**brain tumor**         ROI-level brain tumor patient data (tumor only).   
 **Utils**               Utility functions, e.g. Fourier transform.  
 
 ### Functions (under Utils)
