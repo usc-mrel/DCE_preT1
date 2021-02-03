@@ -27,4 +27,4 @@
 6. Badve C, Yu A, Dastmalchian S, et al. MR fingerprinting of adult brain tumors: Initial experience. In: American Journal of Neuroradiology. Vol 38. American Society of Neuroradiology; 2017:492-499. doi:10.3174/ajnr.A5035
 7. Lebel RM, Guo Y, Lingala SG, Frayne R, Nayak KS. Highly accelerated DCE imaging with integrated T1 mapping. In: ISMRM 25th Scientific Sessions. Honolulu; 2017:138. https://cds.ismrm.org/protected/17MPresentations/abstracts/0138.html. Accessed May 12, 2020.
 
-Got questions? Contact zhibozhu@usc.edu.
+Questions? Contact zhibozhu@usc.edu.
